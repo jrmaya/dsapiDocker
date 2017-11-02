@@ -1,4 +1,4 @@
-FROM localhost:5000/dsapi
+FROM jromanmz/dsapi
 WORKDIR /app
 COPY package.json .
 RUN npm install
