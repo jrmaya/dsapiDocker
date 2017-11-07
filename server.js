@@ -6,7 +6,6 @@
 
 var express     = require('express');
 var app         = express(); 
-var port        = 8080; //Setup the port
 var mongoose    = require('mongoose'); //db manager
 var fs          = require('fs');
 //var passport    = require('passport');
@@ -91,12 +90,19 @@ app.use('/email', emailManager);
 //Start the server
 //===========================================================================================================
 var server_port = 8383;
+var server_portHttp = 8382;
 var server_ip_address = '0.0.0.0';
 
 var https = require('https');
+var http = require('http');
+
 https.createServer(options, app).listen(server_port, server_ip_address, function(){
-    console.log('Running on port' + server_port);
+    console.log('Running https on port ' + server_port);
 });
+http.createServer(options,app).listen(server_portHttp, server_ip_address, function() {
+    console.log('Running http on port ' + server_portHttp)
+});
+
 
 //export DB to be available to the controllers
 module.exports = mongoose;

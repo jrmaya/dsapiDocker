@@ -194,7 +194,7 @@ router.post('/forgot', (req, res) => {
                 }, process.env.SECRET_KEY, { expiresIn: '1h' });
                 // Save token and exp in usr schema
                 user.resetPasswordToken = token;
-                user.resetPasswordExp = Date.now() + 3600000; // 1h.
+                user.resetPasswordExp = Date.now() + 604800000; // 1week.
                 user.save().then(
                     res.json({
                         userId: user._id,
