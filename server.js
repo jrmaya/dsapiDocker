@@ -99,8 +99,8 @@ var http = require('http');
 https.createServer(options, app).listen(server_port, server_ip_address, function(){
     console.log('Running https on port ' + server_port);
 });
-http.createServer(options,app).listen(server_portHttp, server_ip_address, function() {
-    console.log('Running http on port ' + server_portHttp)
+http.createServer(app).listen(server_portHttp, function() {
+    console.log('Running http on port ' + server_portHttp);
 });
 
 
