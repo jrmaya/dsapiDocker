@@ -225,7 +225,7 @@ router.post('/resetPasswordUsers', (req, res) => {
 router.put('/reset/:token', tokenValidator, (req, res) => {
     var pass = req.body.password;
     User.findOne({ resetPasswordToken: req.params.token }, (error, user) => {
-        if(error) throw error;
+        if(error) res.send(error);
         var tokenExpire = user.resetPasswordExpires;
         if (Date.now() > tokenExpire) {
             res.json({ message: 'Password reset token is invalid or has expired.' })
