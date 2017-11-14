@@ -191,7 +191,7 @@ router.post('/forgot', (req, res) => {
                 // Create token 
                 var token = jwt.sign({
                     data: req.body.email
-                }, process.env.SECRET_KEY, { expiresIn: '1h' });
+                }, process.env.SECRET_KEY, { expiresIn: '168h' });
                 // Save token and exp in usr schema
                 user.resetPasswordToken = token;
                 user.resetPasswordExp = Date.now() + 604800000; // 1week.
@@ -225,6 +225,7 @@ router.post('/resetPasswordUsers', (req, res) => {
 router.put('/reset/:token', tokenValidator, (req, res) => {
     var pass = req.body.password;
     User.findOne({ resetPasswordToken: req.params.token }, (error, user) => {
+        if(error) throw error;
         var tokenExpire = user.resetPasswordExpires;
         if (Date.now() > tokenExpire) {
             res.json({ message: 'Password reset token is invalid or has expired.' })
