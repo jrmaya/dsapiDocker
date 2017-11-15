@@ -226,17 +226,20 @@ router.put('/reset/:token', tokenValidator, (req, res) => {
     var pass = req.body.password;
     User.findOne({ resetPasswordToken: req.params.token }, (error, user) => {
         if(error) res.send(error);
-        var tokenExpire = user.resetPasswordExpires;
-        if (Date.now() > tokenExpire) {
-            res.json({ message: 'Password reset token is invalid or has expired.' })
+        if(user !== null) {
+            var tokenExpire = user.resetPasswordExpires;
+            if (Date.now() > tokenExpire) {
+                res.json({ message: 'Password reset token is invalid or has expired.' })
+            }
+            else {
+                user.password = user.generateHash(pass);
+                user.resetPasswordToken = undefined;
+                user.resetPasswordExp = undefined;
+                user.save().then(res.json({ message: 'User updated successfully! ' + user }));
+            }
+        } else {
+            res.send({ status: 'fail', message: 'This token has been used. Please generate a new one' });
         }
-        else {
-            user.password = user.generateHash(pass);
-            user.resetPasswordToken = undefined;
-            user.resetPasswordExp = undefined;
-            user.save().then(res.json({ message: 'User updated successfully! ' + user }));
-        }
-
     });
 });
 
